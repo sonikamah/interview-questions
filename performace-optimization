@@ -1,0 +1,64 @@
+import React, { useState } from "react";
+import "./styles.css";
+
+const Accordian = ({ id, selectedId, heading, sectionText, handleClick }) => {
+  const isExpanded = selectedId === id;
+  console.log(id);
+  return (
+    <div key={id} className="accordian">
+      <div className="heading" onClick={() => handleClick(id)}>
+        {heading}
+      </div>
+      {isExpanded && <div className="sectionText">{sectionText} </div>}
+    </div>
+  );
+};
+
+const MemorizedAccordian = React.memo(Accordian);
+
+const AccordianWrapper = ({ sections }) => {
+  const [selectedId, setSelectdId] = useState("");
+
+  const handleClick = (expandedId) => {
+    setSelectdId(expandedId);
+  };
+  return sections.map((accordian) => {
+    return (
+      <MemorizedAccordian
+        id={accordian.id}
+        {...accordian}
+        selectedId={selectedId}
+        handleClick={handleClick}
+      />
+    );
+  });
+};
+
+export default function App() {
+  const mockData = [
+    {
+      id: "a1",
+      heading: "Accordian1",
+      sectionText: "Its text of Accordian1"
+    },
+    {
+      id: "a2",
+      heading: "Accordian2",
+      sectionText: "Its text of Accordian2"
+    },
+    {
+      id: "a3",
+      heading: "Accordian3",
+      sectionText: "Its text of Accordian3"
+    }
+  ];
+
+  return (
+    <div className="App">
+      <h1>Hello CodeSandbox</h1>
+      <h2>Start editing to see some magic happen!</h2>
+      <AccordianWrapper sections={mockData} />
+    </div>
+  );
+}
+
